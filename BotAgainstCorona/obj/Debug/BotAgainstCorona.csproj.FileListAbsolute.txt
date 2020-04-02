@@ -185,8 +185,9 @@ C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\bin\ko\System.Spatial.re
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\bin\ru\System.Spatial.resources.dll
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\bin\zh-Hans\System.Spatial.resources.dll
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\bin\zh-Hant\System.Spatial.resources.dll
+C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\BotAgainstCorona.Resources.ResourceBot.resources
+C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\BotAgainstCorona.csproj.GenerateResource.cache
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\BotAgainstCorona.csproj.CoreCompileInputs.cache
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\BotAgainstCorona.csproj.CopyComplete
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\Bot Application.dll
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\Bot Application.pdb
-C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Debug\BotAgainstCorona.csprojAssemblyReference.cache

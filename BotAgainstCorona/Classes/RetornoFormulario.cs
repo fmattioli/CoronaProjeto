@@ -5,8 +5,9 @@ using System.Web;
 
 namespace BotAgainstCorona.Classes
 {
-    public class RetornoFormulario 
+    public class Escala
     {
+        public string Sentimento {get; set; }
         
     }
     public class Sintomas
@@ -16,8 +17,7 @@ namespace BotAgainstCorona.Classes
         public bool Tosse { get; set; }
         public bool DorGarganta { get; set; }
         public bool Nenhuma { get; set; }
-        // public string NomeForm { get; set; }
-
-
     }
+
+
 }

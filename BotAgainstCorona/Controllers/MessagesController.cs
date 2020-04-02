@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -10,7 +11,7 @@ using BotAgainstCorona.Dialogs;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
-using static BotAgainstCorona.Classes.RetornoFormulario;
+
 
 namespace BotAgainstCorona
 {
@@ -22,6 +23,8 @@ namespace BotAgainstCorona
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
+        /// 
+        public int entradas { get; set; }
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             try
@@ -45,24 +48,41 @@ namespace BotAgainstCorona
                             nomeForm = item.Key;
                             break; //necessário passar só uma vez
                         }
-                        string retornoValidacao = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
-                        activity.Text = retornoValidacao;
+                        activity.Text = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString()) == string.Empty ? throw new Exception("Não houve retorno de dados do formulário") : conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
                     }
                     await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
                 }
+
+            //    else if (activity.Type == ActivityTypes.ConversationUpdate)
+            //    {
+            //        activity.Text = "Olá";
+            //        await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
+
+
+            //        //if (activity.MembersAdded != null && activity.MembersAdded.Any())
+            //        //{
+            //        //    foreach (var member in activity.MembersAdded)
+            //        //    {
+            //        //        if (member.Id != activity.Recipient.Id)
+            //        //        {
+            //        //            activity.Text = "Olá";
+            //        //            await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
+            //        //        }
+            //        //    }
+            //        //}
+            //    }
             }
             catch (Exception ex)
             {
-                string error = ex.Message;
-                
-                //create response activity
-                Activity msg = activity.CreateReply(error);
-                
+                activity.Text = "ocorreu o seguinte erro";
+                await Conversation.SendAsync(activity, () => new Dialogs.Inicio(ex.Message.ToString()));
 
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
+
+
 
         private Activity HandleSystemMessage(Activity message)
         {

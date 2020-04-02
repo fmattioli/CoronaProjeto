@@ -190,3 +190,5 @@ C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Release\BotAgainstCo
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Release\Bot Application.dll
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Release\Bot Application.pdb
 C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\bin\Bot Application.dll.config
+C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Release\BotAgainstCorona.Resources.ResourceBot.resources
+C:\ProjetoCoronaVirus\BotAgainstCorona\BotAgainstCorona\obj\Release\BotAgainstCorona.csproj.GenerateResource.cache
