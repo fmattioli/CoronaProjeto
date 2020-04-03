@@ -4,6 +4,8 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Collections.Generic;
+using BotAgainstCorona.Utilitarios.Cards;
+using BotAgainstCorona.Utilitarios.QuickReplies;
 
 using System.IO;
 using System.Data;
@@ -21,15 +23,16 @@ namespace BotAgainstCorona.Dialogs
     {
         private string Nome { get; set; }
         public List<string> opcaoTresBotoesTitle { get; set; } = new List<string>();
+        BotAdaptiveCards cards = new BotAdaptiveCards();
+        QuickReply reply = new QuickReply();
+
         public async Task Inicio(IDialogContext context)
         {
             try
             {
-                DateTime horario = DateTime.Now;
                 var mensagem = context.MakeMessage();
-                PromptDialog.Text(context, retornoIntentInicio, $"Bom dia, seja bem vindo. Antes de iniciarmos me diga seu nome? :)");
+                PromptDialog.Text(context, retornoIntentInicio, $"Seja bem vindo. Antes de iniciarmos me diga seu nome? :)");
                 mensagem.Type = ActivityTypes.Typing;
-                await context.PostAsync("");
             }
             catch (Exception erro)
             {
@@ -45,11 +48,39 @@ namespace BotAgainstCorona.Dialogs
             await Escala(context, "Escala", Nome);
         }
 
+        public async Task Escala(IDialogContext context, string nomeJSON, string wordReplace)
+        {
+            try
+            {
+                await cards.AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+
+        public async Task Doencas(IDialogContext context, string nomeJSON, string wordReplace)
+        {
+            try
+            {
+                await cards.AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+        
         public async Task InicioBem(IDialogContext context, LuisResult result)
         {
             try
             {
-                await QuickReplyDoisBotoes(context, $"Isto é ótimo! {Nome} Mesmo assim, me sinto na obrigação de perguntar... Você deseja checar os sintomas que o CoronaVirus causa?", "Checagem de sintomas (tosse, febre, dor de garganta)", "Não tenho interesse");
+                await reply.QuickReplyDoisBotoes(context, $"Isto é ótimo! {Nome} Mesmo assim, me sinto na obrigação de perguntar... Você deseja checar os sintomas que o CoronaVirus causa?", "Checagem de sintomas (tosse, febre, dor de garganta)", "Não tenho interesse");
             }
             catch (Exception erro)
             {
@@ -63,8 +94,27 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await QuickReply(context, $"{Nome}, me diga o que você está sentindo?");
-                await AdaptiveCard(context, nomeJSON);
+                await reply.QuickReplyMessage(context, $"{Nome}, me diga o que você está sentindo?");
+                await cards.AdaptiveCard(context, nomeJSON);
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+
+        }
+
+        public async Task Sintomas(IDialogContext context, string nomeJSON, string retornoFormulario)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(retornoFormulario))
+                {
+                    await reply.QuickReplyMessage(context, $"Por favor, {Nome}, selecione ao menos um item no formulário");
+                }
+                await cards.AdaptiveCard(context, nomeJSON);
             }
             catch (Exception erro)
             {
@@ -79,7 +129,7 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await AdaptiveCard(context, nomeJSON);
+                await cards.AdaptiveCard(context, nomeJSON);
             }
             catch (Exception erro)
             {
@@ -87,13 +137,21 @@ namespace BotAgainstCorona.Dialogs
                 mensagem.Type = ActivityTypes.Typing;
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
-
         }
-        public async Task Escala(IDialogContext context, string nomeJSON, string wordReplace)
+
+        private async Task retornoIntentInformacoesPessoaisSexo(IDialogContext context, IAwaitable<string> result)
         {
             try
             {
-                await AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+                string WelcomeMsg = "Qual é a sua idade?";
+
+                var PromptOptions = new string[] { "Menor que 18 anos", "18 a 39 anos", "40 a 59 anos", "Mais que 60 anos" };
+                PromptDialog.Choice(
+                context,
+                retornoInformacoesPessoaisIdade,
+                PromptOptions,
+                WelcomeMsg, promptStyle: PromptStyle.Auto
+                );
             }
             catch (Exception erro)
             {
@@ -101,8 +159,64 @@ namespace BotAgainstCorona.Dialogs
                 mensagem.Type = ActivityTypes.Typing;
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
-
         }
+
+
+        private async Task retornoInformacoesPessoaisIdade(IDialogContext context, IAwaitable<string> result)
+        {
+            Nome = await result;
+            await Doencas(context, "Doencas", Nome);
+        }
+
+        public async Task InformacoesPessoa(IDialogContext context)
+        {
+            try
+            {
+                string WelcomeMsg = "Qual é o seu sexo?";
+
+                var PromptOptions = new string[] { "Masculino", "Feminino" };
+                PromptDialog.Choice(
+                context,
+                retornoIntentInformacoesPessoaisSexo,
+                PromptOptions,
+                WelcomeMsg, promptStyle: PromptStyle.Auto
+                );
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+
+        public async Task Sinais(IDialogContext context, string nomeJSON)
+        {
+            try
+            {
+                await cards.AdaptiveCard(context, nomeJSON);
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+        public async Task CoronaVirus(IDialogContext context)
+        {
+            try
+            {
+                await reply.QuickReplyMessage(context, "OPAAAAAAAAAAAAAAAAAAAAA");
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+
         public async Task Erro(IDialogContext context, string erro)
         {
             try
@@ -144,7 +258,7 @@ namespace BotAgainstCorona.Dialogs
                 opcaoTresBotoesTitle.Add("Em caso de dúvidas, ligue o DiskSaúde(136)");
                 opcaoTresBotoesTitle.Add("Dicas oficiais");
                 opcaoTresBotoesTitle.Add("Notícias");
-                QuickReplyTresBotoes(context, $"Ótimo: {Nome}, em casos de dúvidas: ", opcaoTresBotoesTitle);
+                reply.QuickReplyTresBotoes(context, $"Ótimo: {Nome}, em casos de dúvidas: ", opcaoTresBotoesTitle);
             }
             catch (Exception erro)
             {
@@ -153,88 +267,6 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
-
-        private async Task AdaptiveCard(IDialogContext context, string nomeJSON, string origemReplace = "", string destinoReplace = "")
-        {
-            var returnMessage = context.MakeMessage();
-            var json = URL($"https://testedofelipe.000webhostapp.com/json/{nomeJSON}.json");
-            if (!string.IsNullOrEmpty(destinoReplace))
-            {
-                json = json.Replace(origemReplace, origemReplace);
-            }
-            var results = AdaptiveCards.AdaptiveCard.FromJson(json);
-            var card = results.Card;
-
-            returnMessage.Attachments.Add(new Attachment()
-            {
-
-                Content = card,
-                ContentType = AdaptiveCards.AdaptiveCard.ContentType,
-                Name = "Card"
-            });
-
-            await context.PostAsync(returnMessage);
-        }
-
-        private async void QuickReplyTresBotoes(IDialogContext context, string msg, List<string> titlesButtons)
-        {
-            var reply = context.MakeMessage();
-            reply.Type = ActivityTypes.Message;
-            reply.TextFormat = TextFormatTypes.Plain;
-            reply.Text = msg;
-
-
-            reply.SuggestedActions = new SuggestedActions()
-            {
-                Actions = new List<CardAction>()
-                    {
-                        new CardAction(){ Title = titlesButtons[0], Type=ActionTypes.OpenUrl, Value="https://globoesporte.globo.com/" },
-                        new CardAction(){ Title = titlesButtons[1], Type=ActionTypes.OpenUrl, Value="https://globoesporte.globo.com/" },
-                        new CardAction(){ Title = titlesButtons[2], Type=ActionTypes.OpenUrl, Value="https://globoesporte.globo.com/"},
-                    }
-            };
-
-            await context.PostAsync(reply);
-        }
-
-        private async Task QuickReplyDoisBotoes(IDialogContext context, string msg, string titleFirstButton, string titleSecondtButton)
-        {
-            var reply = context.MakeMessage();
-            reply.Type = ActivityTypes.Message;
-            reply.TextFormat = TextFormatTypes.Plain;
-            reply.Text = msg;
-
-
-            reply.SuggestedActions = new SuggestedActions()
-            {
-                Actions = new List<CardAction>()
-                    {
-                        new CardAction(){ Title = titleFirstButton, Type=ActionTypes.ImBack, Value=titleFirstButton },
-                        new CardAction(){ Title = titleSecondtButton, Type=ActionTypes.ImBack, Value=titleSecondtButton },
-                    }
-            };
-
-            await context.PostAsync(reply);
-        }
-
-
-        private static async Task QuickReply(IDialogContext ctx, string message)
-        {
-            var reply = ctx.MakeMessage();
-            reply.Type = ActivityTypes.Message;
-            reply.TextFormat = TextFormatTypes.Plain;
-            reply.Text = message;
-
-            await ctx.PostAsync(reply);
-        }
         
-        public string URL(String url)
-        {
-            WebClient Client = new WebClient();
-            Client.Encoding = Encoding.UTF8;
-            var json = Client.DownloadString(url);
-            return json;
-        }
-
     }
 }

@@ -24,7 +24,8 @@ namespace BotAgainstCorona
         /// Receive a message from a user and reply to it
         /// </summary>
         /// 
-        public int entradas { get; set; }
+        public bool erroFormulario { get; set; }
+
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             try
@@ -48,9 +49,21 @@ namespace BotAgainstCorona
                             nomeForm = item.Key;
                             break; //necessário passar só uma vez
                         }
-                        activity.Text = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString()) == string.Empty ? throw new Exception("Não houve retorno de dados do formulário") : conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
+                        if (nomeForm != string.Empty)
+                        {
+                            activity.Text = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
+                            if (activity.Text.Contains("preenchido de forma incorreta"))
+                            {
+                                erroFormulario = true;
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Não houve retorno de dados do formulário");
+                        }
+                        
                     }
-                    await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
+                    await Conversation.SendAsync(activity, () => new Dialogs.Inicio("",erroFormulario == true ? activity.Text : ""));
                 }
 
             //    else if (activity.Type == ActivityTypes.ConversationUpdate)

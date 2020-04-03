@@ -149,11 +149,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\ResourceBot.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResourceBot.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Utilitarios\Cards\BotAdaptiveCards.cs" />
+    <Compile Include="Utilitarios\QuickReplies\QuickReply.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -163,18 +160,15 @@
     <None Include="Properties\PublishProfiles\BotAgainstCorona - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - Web Deploy1.pubxml" />
+    <Content Include="Utilitarios\Formularios\Escala.json" />
+    <Content Include="Utilitarios\Formularios\PeriodoSintomas.json" />
+    <Content Include="Utilitarios\Formularios\Sintomas.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\ResourceBot.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourceBot.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
