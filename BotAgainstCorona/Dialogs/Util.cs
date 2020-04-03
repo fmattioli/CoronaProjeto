@@ -30,9 +30,9 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                var mensagem = context.MakeMessage();
-                PromptDialog.Text(context, retornoIntentInicio, $"Seja bem vindo. Antes de iniciarmos me diga seu nome? :)");
-                mensagem.Type = ActivityTypes.Typing;
+                await reply.QuickReplyMessage(context, "Olá, seja bem vindo... Vamos começar a responder o questionário sobre o corona virus??");
+                await reply.QuickReplyMessage(context, "Lembre-se que não é necessário você digitar nada... Apenas clique nos botões!");
+                await Escala(context, "Escala", "");
             }
             catch (Exception erro)
             {
@@ -260,6 +260,7 @@ namespace BotAgainstCorona.Dialogs
                 opcaoTresBotoesTitle.Add("Dicas oficiais");
                 opcaoTresBotoesTitle.Add("Notícias");
                 reply.QuickReplyTresBotoes(context, $"Ótimo: {Nome}, em casos de dúvidas: ", opcaoTresBotoesTitle);
+                
             }
             catch (Exception erro)
             {

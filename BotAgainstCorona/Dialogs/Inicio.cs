@@ -18,12 +18,14 @@ namespace BotAgainstCorona.Dialogs
         {
             _erro = msg;
             _retornoFormulario = retornoFormulario;
+           
         }
         
         [LuisIntent("inicio")]
         public async Task InicioDialog(IDialogContext context, LuisResult result)
         {
             await Util.Inicio(context);
+           
         }
 
         [LuisIntent("Sintomas")]

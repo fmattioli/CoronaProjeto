@@ -17,6 +17,7 @@ namespace BotAgainstCorona.Utilitarios.QuickReplies
             reply.Type = ActivityTypes.Message;
             reply.TextFormat = TextFormatTypes.Plain;
             reply.Text = message;
+         
 
             await ctx.PostAsync(reply);
         }
@@ -27,6 +28,7 @@ namespace BotAgainstCorona.Utilitarios.QuickReplies
             reply.Type = ActivityTypes.Message;
             reply.TextFormat = TextFormatTypes.Plain;
             reply.Text = msg;
+       
 
 
             reply.SuggestedActions = new SuggestedActions()
@@ -46,7 +48,7 @@ namespace BotAgainstCorona.Utilitarios.QuickReplies
             reply.Type = ActivityTypes.Message;
             reply.TextFormat = TextFormatTypes.Plain;
             reply.Text = msg;
-
+          
 
             reply.SuggestedActions = new SuggestedActions()
             {

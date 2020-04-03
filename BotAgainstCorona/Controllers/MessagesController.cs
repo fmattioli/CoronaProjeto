@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,8 +29,10 @@ namespace BotAgainstCorona
 
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            List<string> stri = new List<string>();
             try
             {
+
                 if (activity.Type == ActivityTypes.Message)
                 {
                     activity.Type = ActivityTypes.Message;
@@ -51,6 +54,7 @@ namespace BotAgainstCorona
                         }
                         if (nomeForm != string.Empty)
                         {
+                            activity.InputHint = InputHints.IgnoringInput;
                             activity.Text = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
                             if (activity.Text.Contains("preenchido de forma incorreta"))
                             {
@@ -61,41 +65,33 @@ namespace BotAgainstCorona
                         {
                             throw new Exception("Não houve retorno de dados do formulário");
                         }
-                        
                     }
-                    await Conversation.SendAsync(activity, () => new Dialogs.Inicio("",erroFormulario == true ? activity.Text : ""));
+
+                    await Conversation.SendAsync(activity, () => new Dialogs.Inicio("", erroFormulario == true ? activity.Text : ""));
                 }
 
-            //    else if (activity.Type == ActivityTypes.ConversationUpdate)
-            //    {
-            //        activity.Text = "Olá";
-            //        await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
-
-
-            //        //if (activity.MembersAdded != null && activity.MembersAdded.Any())
-            //        //{
-            //        //    foreach (var member in activity.MembersAdded)
-            //        //    {
-            //        //        if (member.Id != activity.Recipient.Id)
-            //        //        {
-            //        //            activity.Text = "Olá";
-            //        //            await Conversation.SendAsync(activity, () => new Dialogs.Inicio());
-            //        //        }
-            //        //    }
-            //        //}
-            //    }
+                else if (activity.Type == ActivityTypes.ConversationUpdate)
+                {
+                    foreach (var member in activity.MembersAdded)
+                    {
+                        stri.Add(member.Name);
+                        if (member.Name.Trim().Contains("BotAgainstCorona") || member.Id == "BotAgainstCorona")
+                        {
+                            activity.Text = "Olá";
+                            await Conversation.SendAsync(activity, () => new Dialogs.Inicio(activity.Text));
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                activity.Text = "ocorreu o seguinte erro";
-                await Conversation.SendAsync(activity, () => new Dialogs.Inicio(ex.Message.ToString()));
+                activity.Text = "ocorreu o seguinte erro" + activity.MembersAdded[0].Name;
+                await Conversation.SendAsync(activity, () => new Dialogs.Inicio(activity.Text));
 
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
-
-
 
         private Activity HandleSystemMessage(Activity message)
         {

@@ -20,6 +20,7 @@ namespace BotAgainstCorona.Dialogs
 
         private async Task IniciarConversa(IDialogContext context, IAwaitable<object> result)
         {
+            
             await Util.Inicio(context);
         }
     }
