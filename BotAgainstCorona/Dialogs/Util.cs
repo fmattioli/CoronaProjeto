@@ -207,7 +207,8 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await reply.QuickReplyMessage(context, "OPAAAAAAAAAAAAAAAAAAAAA");
+                await reply.QuickReplyMessage(context, "Nossa! pela a minha inteligência os seus sintomas são perigosos!!! Sigam as instruções abaixo");
+                await reply.QuickReplyMessage(context, "Ligue para o SAMU (192) ou caso prefira ligue para o atendimento pré-cliníco: 0800 591 889");
             }
             catch (Exception erro)
             {

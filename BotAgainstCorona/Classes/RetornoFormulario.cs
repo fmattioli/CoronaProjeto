@@ -12,10 +12,10 @@ namespace BotAgainstCorona.Classes
     }
     public class Sintomas
     {
-        private bool DificuldadeRespirar { get; set; }
-        private bool Febre { get; set; }
-        private bool Tosse { get; set; }
-        private bool DorGarganta { get; set; }
+        public bool DificuldadeRespirar { get; set; }
+        public bool Febre { get; set; }
+        public bool Tosse { get; set; }
+        public bool DorGarganta { get; set; }
         public bool Nenhuma { get; set; }
     }
     public class PeriodoSintomas
@@ -25,19 +25,19 @@ namespace BotAgainstCorona.Classes
 
     public class Doencas
     {
-        private bool Diabetes { get; set; }
-        private bool RenalCronica { get; set; }
-        private bool RespiratoriaCronica { get; set; }
-        private bool PressaoAlta { get; set; }
+        public bool Diabetes { get; set; }
+        public bool RenalCronica { get; set; }
+        public bool RespiratoriaCronica { get; set; }
+        public bool PressaoAlta { get; set; }
         public bool Nenhuma { get; set; }
     }
 
     public class Sinais
     {
-        private bool Palidez { get; set; }
-        private bool BocaPontaDedosRoxa { get; set; }
-        private bool RespirarBaixo { get; set; }
-        private bool PressaoBaixa { get; set; }
+        public bool Palidez { get; set; }
+        public bool BocaPontaDedosRoxa { get; set; }
+        public bool RespirarBaixo { get; set; }
+        public bool PressaoBaixa { get; set; }
         public bool Nenhuma { get; set; }
     }
 
