@@ -1,0 +1,73 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Sintomas",
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dificuldade pra respirar?",
+            "valueOn": true,
+            "valueOff": false,
+            "id": "DificuldadeRespirar",
+            "wrap": false,
+            "value": ""
+        },
+        
+        {
+            "type": "Input.Toggle",
+            "title": "Febre?",
+            "valueOn": true,
+            "valueOff": false,
+            "id": "Febre",
+            "wrap": false,
+            "value": ""
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Tosse?",
+            "valueOn": true,
+            "valueOff": false,
+            "id": "Tosse",
+            "wrap": false,
+            "value": ""
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dor de garganta?",
+            "valueOn": true,
+            "valueOff": false,
+            "id": "DorGarganta",
+            "wrap": false,
+            "value": ""
+        }
+        ,
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhuma das anteriores",
+            "valueOn": true,
+            "valueOff": false,
+            "id": "Nenhuma",
+            "wrap": false,
+            "value": ""
+        }
+        
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit",
+            "data": {
+                "Sintomas": "formSintomas"
+            }
+        }
+        
+    ]
+}
