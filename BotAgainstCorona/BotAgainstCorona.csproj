@@ -132,16 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.htm" />
-    <Content Include="Front-Bot\botchat.js" />
-    <Content Include="Front-Bot\index.html" />
-    <Content Include="Front-Bot\styles\pages.css" />
-    <Content Include="Front-Bot\styles\skins\botchat.css" />
-    <Content Include="Front-Bot\styles\skins\fbSkin.css" />
-    <Content Include="Front-Bot\styles\skins\snowSkin.css" />
-    <Content Include="Front-Bot\styles\skins\twitSkin.css" />
-    <Content Include="Front-Bot\styles\skins\vsSkin.css" />
-    <Content Include="Front-Bot\styles\skins\whatsappSkin.css" />
-    <Content Include="Front-Bot\webpack.production.config.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

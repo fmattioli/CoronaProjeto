@@ -72,7 +72,7 @@ namespace BotAgainstCorona
                     foreach (var member in activity.MembersAdded)
                     {
                         stri.Add(member.Name);
-                        if (member.Name.Trim().Contains("BotAgainstCorona") || member.Id == "BotAgainstCorona")
+                        if (member.Name.Trim().Contains("BotAgainstCorona") || member.Name == "Bot")
                         {
                             activity.Text = "Olá";
                             await Conversation.SendAsync(activity, () => new Dialogs.Inicio(activity.Text));

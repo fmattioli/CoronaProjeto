@@ -288,3 +288,5 @@ C:\CoronaProjeto\BotAgainstCorona\obj\Release\BotAgainstCorona.csproj.CoreCompil
 C:\CoronaProjeto\BotAgainstCorona\obj\Release\BotAgainstCorona.csproj.CopyComplete
 C:\CoronaProjeto\BotAgainstCorona\obj\Release\Bot Application.dll
 C:\CoronaProjeto\BotAgainstCorona\obj\Release\Bot Application.pdb
+C:\CoronaProjeto\BotAgainstCorona\bin\Bot.Dominio.dll
+C:\CoronaProjeto\BotAgainstCorona\bin\Bot.Dominio.pdb
