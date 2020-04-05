@@ -1,18 +1,15 @@
-﻿using System;
+﻿
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using BotAgainstCorona.Classes;
-using BotAgainstCorona.Dialogs;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
-using Newtonsoft.Json;
-
+using Bot.Dominio;
 
 namespace BotAgainstCorona
 {

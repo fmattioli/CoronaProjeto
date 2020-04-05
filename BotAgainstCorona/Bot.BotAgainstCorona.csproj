@@ -149,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\ConversationControle.cs" />
+    <Compile Include="Classes\RetornoFormulario.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\Inicio.cs" />
     <Compile Include="Dialogs\StartDialog.cs" />
@@ -179,12 +181,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bot.Dominio\Bot.Dominio.csproj">
-      <Project>{2443f3df-58b8-4d96-81c0-847e6cde8cf5}</Project>
-      <Name>Bot.Dominio</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

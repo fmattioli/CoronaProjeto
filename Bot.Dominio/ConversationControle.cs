@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 
-namespace BotAgainstCorona.Classes
+namespace Bot.Dominio
 {
     public class ConversationControle
     {

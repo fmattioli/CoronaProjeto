@@ -286,3 +286,6 @@ C:\CoronaProjeto\BotAgainstCorona\obj\Debug\BotAgainstCorona.csproj.CoreCompileI
 C:\CoronaProjeto\BotAgainstCorona\obj\Debug\BotAgainstCorona.csproj.CopyComplete
 C:\CoronaProjeto\BotAgainstCorona\obj\Debug\Bot Application.dll
 C:\CoronaProjeto\BotAgainstCorona\obj\Debug\Bot Application.pdb
+C:\CoronaProjeto\BotAgainstCorona\bin\Bot.Dominio.dll
+C:\CoronaProjeto\BotAgainstCorona\bin\Bot.Dominio.pdb
+C:\CoronaProjeto\BotAgainstCorona\obj\Debug\BotAgainstCorona.csprojAssemblyReference.cache
