@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
@@ -9,23 +11,24 @@ namespace BotAgainstCorona.Dialogs
 {
     [Serializable]
     [LuisModel("4200aec6-fbaa-4c59-bc55-6b98bbfd3e39", "454872db14ad488183f35cff776f91df", domain: "brazilsouth.api.cognitive.microsoft.com")]
+
     public class InicioDialog : LuisDialog<object>
     {
         public readonly UtilDialog Util = new UtilDialog();
         private string _erro { get; set; }
-        private string _retornoFormulario { get; set; }
-        
-        
+        private Dictionary<string, string> dictonary = new Dictionary<string, string>();
+        private bool _cardSintomas { get; set; }
+
         [LuisIntent("inicio")]
         public async Task Inicio(IDialogContext context, LuisResult result)
         {
             await Util.Inicio(context);
-           
         }
 
         [LuisIntent("Sexo")]
         public async Task Sexo(IDialogContext context, LuisResult result)
         {
+            AppendResultsJson(context);
             await Util.Sexo(context);
         }
 
@@ -33,51 +36,34 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Doencas")]
         public async Task Doencas(IDialogContext context, LuisResult result)
         {
-            await Util.Doencas(context, "Doencas");
+            
+            if (!result.Query.Contains("formulário de doencas que o usuário já teve está preenchido de forma incorreta"))
+            {
+                await Util.Doencas(context, "Doencas", false);
+                AppendResultsJson(context);
+            }
+            else
+            {
+                await Util.Doencas(context, "Doencas", true);
+            }
+            
         }
 
-        [LuisIntent("VerificarSintomas")]
-        public async Task InicioMal(IDialogContext context, LuisResult result)
+        [LuisIntent("Sintomas")]
+        public async Task Sintomas(IDialogContext context, LuisResult result)
         {
-            await Util.InicioMal(context, "Sintomas");
+            AppendResultsJson(context);
+            if (!_cardSintomas)
+            {
+                await Util.Sintomas(context, "Sintomas", _cardSintomas);
+                _cardSintomas = true; //Existem dois formularios de sintomas, deste modo é necessário setar a variavel pra true pra exibir o outro formulario de sintomas
+            }
+            else
+            {
+                await Util.Sintomas(context, "SintomasParte2", _cardSintomas);
+            }
         }
-
-        [LuisIntent("DesejaChecarSintomas")]
-        public async Task InicioBem(IDialogContext context, LuisResult result)
-        {
-            await Util.InicioBem(context, result);
-        }
-
-        [LuisIntent("PeriodoSintomas")]
-        public async Task PeriodoSintomas(IDialogContext context, LuisResult result)
-        {
-            await Util.PeriodoSintomas(context, "PeriodoSintomas");
-        }
-
-        [LuisIntent("FimInteracao")]
-        public async Task CasoImprovavel(IDialogContext context, LuisResult result)
-        {
-            await Util.FimInteracao(context);
-        }
-
-        [LuisIntent("InformacoesPessoa")]
-        public async Task InformacoesPessoa(IDialogContext context, LuisResult result)
-        {
-            await Util.InformacoesPessoa(context);
-        }
-
-        [LuisIntent("Sinais")]
-        public async Task SintomasCronicos(IDialogContext context, LuisResult result)
-        {
-            await Util.Sinais(context, "Sinais");
-        }
-
-        [LuisIntent("CoronaVirus")]
-        public async Task CoronaVirus(IDialogContext context, LuisResult result)
-        {
-            await Util.CoronaVirus(context);
-        }
-
+        
         [LuisIntent("Erro")]
         public async Task Erro(IDialogContext context, LuisResult result)
         {
@@ -88,6 +74,17 @@ namespace BotAgainstCorona.Dialogs
         public async Task None(IDialogContext context, LuisResult result)
         {
             await Util.None(context);
+        }
+
+        private void AppendResultsJson(IDialogContext context)
+        {
+            Activity activity = (Activity)context.Activity;
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            var retornoJSON = jss.Deserialize<dynamic>(activity.Value.ToString().Replace("{{", "{{").Replace("}}", "}"));
+            foreach (var item in retornoJSON)
+            {
+                dictonary.Add(item.Key, item.Value);
+            }
         }
     }
 }

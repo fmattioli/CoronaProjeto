@@ -103,13 +103,22 @@ namespace BotAgainstCorona.Dialogs
 
         }
 
-        public async Task Doencas(IDialogContext context, string nomeJSON)
+        public async Task Doencas(IDialogContext context, string nomeJSON, bool retorno)
         {
             try
             {
-                await reply.QuickReplyMessage(context, $"Certo, agora selecione abaixo as doenças que você possui");
-                await reply.QuickReplyMessage(context, $"Ahhh e lembre-se, caso não tenha nenhuma basta clicar em nenhuma das anteriores");
-                await cards.AdaptiveCard(context, nomeJSON);
+                if (!retorno)
+                {
+                    await reply.QuickReplyMessage(context, $"Certo, agora selecione abaixo as doenças que você possui");
+                    await reply.QuickReplyMessage(context, $"Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
+                    await cards.AdaptiveCard(context, nomeJSON);
+                }
+                else
+                {
+                    await reply.QuickReplyMessage(context, $"Opa! Lembre-se de preencher ao menos uma das opções, selecione abaixo as doenças que você possui");
+                    await reply.QuickReplyMessage(context, $"Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
+                    await cards.AdaptiveCard(context, nomeJSON);
+                }
             }
             catch (Exception erro)
             {
@@ -120,6 +129,32 @@ namespace BotAgainstCorona.Dialogs
 
         }
 
+        public async Task Sintomas(IDialogContext context, string nomeJSON, bool cardSintomas)
+        {
+            try
+            {
+                if (cardSintomas)
+                {
+                    await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora preciso que você me diga como você está se sentindo...");
+                    await reply.QuickReplyMessage(context, $"Selecione abaixo os sintomas que você está tendo. Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
+                    await cards.AdaptiveCard(context, nomeJSON);
+                }
+                else
+                {
+
+                    await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora a minha pergunta continua sendo sobre seus sintomas, mas veja que os sintomas mudaram...");
+                    await reply.QuickReplyMessage(context, $"Selecione abaixo os sintomas que você está tendo. Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
+                    await cards.AdaptiveCard(context, nomeJSON);
+                }
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+
+        }
         public async Task PeriodoSintomas(IDialogContext context, string nomeJSON)
         {
             try

@@ -26,7 +26,6 @@ namespace Bot.Dominio
             }
 
             return ValidarDadosFormulario(nomeForm, json);
-
         }
 
         public string ValidarDadosFormulario(string nomeForm, string retornoJSON)
@@ -44,9 +43,12 @@ namespace Bot.Dominio
                     sexo = JsonConvert.DeserializeObject<SexoUsuario>(retornoJSON);
                     RetornoValidacao = ValidateAnswerOneOption(sexo);
                     return RetornoValidacao == null ? "Prosseguir para selecionar as doencas que o usuário tem ou já teve" : RetornoValidacao;
-
                 case "Doencas":
-                    return "Ir pra fluxo não implementado";
+                    Doencas doencas = new Doencas();
+                    doencas = JsonConvert.DeserializeObject<Doencas>(retornoJSON);
+                    RetornoValidacao = ValidarFormularioDoencas(doencas);
+                    return RetornoValidacao == null ? "Prosseguir para a verificar os sintomas que o usuário está sentindo ou já sentiu" : RetornoValidacao;
+
                 //    Escala escala = new Escala();
                 //    escala = JsonConvert.DeserializeObject<Escala>(retornoJSON);
                 //    return ValidarResposta(escala);
@@ -60,10 +62,7 @@ namespace Bot.Dominio
                 //    PeriodoSintomas periodo = new PeriodoSintomas();
                 //    periodo = JsonConvert.DeserializeObject<PeriodoSintomas>(retornoJSON);
                 //    return ValidarFormularioPeriodoSintomas(periodo);
-                //case "form-Doencas":
-                //    Doencas doencas = new Doencas();
-                //    doencas = JsonConvert.DeserializeObject<Doencas>(retornoJSON);
-                //    return ValidarFormularioDoencas(doencas);
+
                 //case "form-Sinais":
                 //    Sinais sinais = new Sinais();
                 //    sinais = JsonConvert.DeserializeObject<Sinais>(retornoJSON);
@@ -84,15 +83,15 @@ namespace Bot.Dominio
                 var value = property.GetValue(retorno).ToString();
                 if(value.ToString() == "")
                 {
-                    return null;
+                    return "Erro";
                 }
-                if(properties.Count() == 1)
-                {
-                    return AppendJson(retorno);
+                else
+                { 
+                    return null;
                 }
             }
 
-            return null;
+            return "Erro";
         }
 
         private string AppendJson(object objeto)
@@ -112,52 +111,7 @@ namespace Bot.Dominio
             return null;
         }
 
-        public string ValidarFormularioPeriodoSintomas(PeriodoSintomas sintomas)
-        {
-            switch (sintomas.Periodo)
-            {
-                case "Hoje":
-                    return "usuário sente sintomas há 7 dias";
-                case "1Semana":
-                    return "usuário com sintomas há mais de uma semana";
-                case "2Semanas":
-                    return "usuário com sintomas há mais de uma semana";
-                case "3Semanas":
-                    return "usuário com sintomas há mais de uma semana";
-                default:
-                    return "";
-
-            }
-        }
-
-        public string ValidarFormularioSintomas(Sintomas sintomas)
-        {
-            List<int> itensFalsos = new List<int>();
-            PropertyInfo[] properties = typeof(Sintomas).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                var value = property.GetValue(sintomas);
-                if (bool.Parse(value.ToString()))
-                {
-                    if (sintomas.Nenhuma)
-                    {
-                        return "Prosseguir para caso improvável";
-                    }
-                    else
-                    {
-                        return "verificar quantidade de dias que o usuário está sentindo os sintomas";
-                    }
-                }
-                else
-                {
-                    itensFalsos.Add(1);
-                    if (itensFalsos.Count == 5)
-                        return "formulário de sintomas preenchido de forma incorreta";
-                }
-            }
-            return "formulário de sintomas preenchido de forma incorreta";
-        }
-
+        
         public string ValidarFormularioDoencas(Doencas doencas)
         {
             List<int> itensFalsos = new List<int>();
@@ -169,18 +123,18 @@ namespace Bot.Dominio
                 {
                     if (doencas.Nenhuma)
                     {
-                        return "Prosseguir para caso improvável";
+                        return null;
                     }
                     else
                     {
-                        return "Verificar sinais do usuário";
+                        return null;
                     }
                 }
                 else
                 {
                     itensFalsos.Add(1);
                     if (itensFalsos.Count == 5)
-                        return "formulário de sintomas preenchido de forma incorreta";
+                        return "formulário de doencas que o usuário já teve está preenchido de forma incorreta";
                 }
             }
             return "formulário de sintomas preenchido de forma incorreta";
