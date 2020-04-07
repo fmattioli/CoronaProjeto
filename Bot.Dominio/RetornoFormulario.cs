@@ -41,5 +41,22 @@ namespace Bot.Dominio
         public bool Nenhuma { get; set; }
     }
 
+    public class IdadeUsuario
+    {
+        public string Idade { get; set; }
+    }
+
+    public class SexoUsuario
+    {
+        public string Sexo { get; set; }
+    }
+
+    public class FinalJSON
+    {
+        public string Idade { get; set; }
+    }
+
+
+
 
 }

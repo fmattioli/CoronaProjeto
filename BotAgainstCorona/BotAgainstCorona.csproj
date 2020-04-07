@@ -140,9 +140,9 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
-    <Compile Include="Dialogs\Inicio.cs" />
+    <Compile Include="Dialogs\InicioDialog.cs" />
     <Compile Include="Dialogs\StartDialog.cs" />
-    <Compile Include="Dialogs\Util.cs" />
+    <Compile Include="Dialogs\UtilDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

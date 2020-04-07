@@ -10,26 +10,27 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using Bot.Dominio;
+using System.Text;
 
 namespace BotAgainstCorona
 {
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        ConversationControle conversation = new ConversationControle();
+        
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
         /// 
         public bool erroFormulario { get; set; }
+        public Dictionary<string, string> json { get; set; } = new Dictionary<string, string>();
+        ConversationControle conversasionControle = new ConversationControle();
 
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            List<string> stri = new List<string>();
             try
             {
-
                 if (activity.Type == ActivityTypes.Message)
                 {
                     activity.Type = ActivityTypes.Message;
@@ -40,50 +41,34 @@ namespace BotAgainstCorona
                     await connector.Conversations.ReplyToActivityAsync(isTyping);
                     if (activity.Value != null)
                     {
-                        string nomeForm = string.Empty;
-                        activity.Value = activity.Value.ToString().Replace("{{", "{{").Replace("}}", "}");
-                        JavaScriptSerializer jss = new JavaScriptSerializer();
-                        var retornoJSON = jss.Deserialize<dynamic>(activity.Value.ToString());
-                        foreach (var item in retornoJSON)
-                        {
-                            nomeForm = item.Key;
-                            break; //necessário passar só uma vez
-                        }
-                        if (nomeForm != string.Empty)
-                        {
-                            activity.InputHint = InputHints.IgnoringInput;
-                            activity.Text = conversation.ValidarDadosFormulario($"form-{nomeForm}", activity.Value.ToString());
-                            if (activity.Text.Contains("preenchido de forma incorreta"))
-                            {
-                                erroFormulario = true;
-                            }
-                        }
-                        else
-                        {
+                        activity.Text = conversasionControle.RetornarProximaIntent(activity.Value.ToString());
+                        
+                        if(activity.Value.ToString() == "")
+                        { 
                             throw new Exception("Não houve retorno de dados do formulário");
                         }
                     }
 
-                    await Conversation.SendAsync(activity, () => new Dialogs.Inicio("", erroFormulario == true ? activity.Text : ""));
+                    await Conversation.SendAsync(activity, () => new Dialogs.InicioDialog());
                 }
 
                 else if (activity.Type == ActivityTypes.ConversationUpdate)
                 {
                     foreach (var member in activity.MembersAdded)
                     {
-                        stri.Add(member.Name);
                         if (member.Name.Trim().Contains("BotAgainstCorona") || member.Name == "Bot")
                         {
                             activity.Text = "Olá";
-                            await Conversation.SendAsync(activity, () => new Dialogs.Inicio(activity.Text));
+                            await Conversation.SendAsync(activity, () => new Dialogs.InicioDialog());
                         }
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 activity.Text = "ocorreu o seguinte erro" + activity.MembersAdded[0].Name;
-                await Conversation.SendAsync(activity, () => new Dialogs.Inicio(activity.Text));
+                await Conversation.SendAsync(activity, () => new Dialogs.InicioDialog());
 
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);

@@ -19,7 +19,7 @@ using System.Text;
 namespace BotAgainstCorona.Dialogs
 {
     [Serializable]
-    public class Util
+    public class UtilDialog
     {
         private string Nome { get; set; }
         public List<string> opcaoTresBotoesTitle { get; set; } = new List<string>();
@@ -30,9 +30,9 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await reply.QuickReplyMessage(context, "Olá, seja bem vindo... Vamos começar a responder o questionário sobre o corona virus??");
-                await reply.QuickReplyMessage(context, "Lembre-se que não é necessário você digitar nada... Apenas clique nos botões!");
-                await Escala(context, "Escala", "");
+                await reply.QuickReplyMessage(context, "Olá, Vamos ver como você está se sentindo hoje?");
+                await reply.QuickReplyMessage(context, "Antes de falarmos da sua saúde precisamos fazer algumas perguntas básicas");
+                await MontarAdaptiveCard(context, "Inicio");
             }
             catch (Exception erro)
             {
@@ -42,17 +42,12 @@ namespace BotAgainstCorona.Dialogs
             }
         }
 
-        private async Task retornoIntentInicio(IDialogContext context, IAwaitable<string> result)
-        {
-            Nome = await result;
-            await Escala(context, "Escala", Nome);
-        }
 
-        public async Task Escala(IDialogContext context, string nomeJSON, string wordReplace)
+        public async Task MontarAdaptiveCard(IDialogContext context, string nomeJSON)
         {
             try
             {
-                await cards.AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+                await cards.AdaptiveCard(context, nomeJSON);
             }
             catch (Exception erro)
             {
@@ -62,11 +57,12 @@ namespace BotAgainstCorona.Dialogs
             }
         }
 
-        public async Task Doencas(IDialogContext context, string nomeJSON, string wordReplace)
+        public async Task Sexo(IDialogContext context)
         {
             try
             {
-                await cards.AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+                await reply.QuickReplyMessage(context, "Certo... Vamos prosseguir!");
+                await MontarAdaptiveCard(context, "Sexo");
             }
             catch (Exception erro)
             {
@@ -75,6 +71,7 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
+
         
         public async Task InicioBem(IDialogContext context, LuisResult result)
         {
@@ -106,14 +103,12 @@ namespace BotAgainstCorona.Dialogs
 
         }
 
-        public async Task Sintomas(IDialogContext context, string nomeJSON, string retornoFormulario)
+        public async Task Doencas(IDialogContext context, string nomeJSON)
         {
             try
             {
-                if (!string.IsNullOrEmpty(retornoFormulario))
-                {
-                    await reply.QuickReplyMessage(context, $"Por favor, {Nome}, selecione ao menos um item no formulário");
-                }
+                await reply.QuickReplyMessage(context, $"Certo, agora selecione abaixo as doenças que você possui");
+                await reply.QuickReplyMessage(context, $"Ahhh e lembre-se, caso não tenha nenhuma basta clicar em nenhuma das anteriores");
                 await cards.AdaptiveCard(context, nomeJSON);
             }
             catch (Exception erro)
@@ -165,7 +160,7 @@ namespace BotAgainstCorona.Dialogs
         private async Task retornoInformacoesPessoaisIdade(IDialogContext context, IAwaitable<string> result)
         {
             Nome = await result;
-            await Doencas(context, "Doencas", Nome);
+            //await Doencas(context, "Doencas", Nome);
         }
 
         public async Task InformacoesPessoa(IDialogContext context)
@@ -224,7 +219,8 @@ namespace BotAgainstCorona.Dialogs
             {
                 var mensagem = context.MakeMessage();
                 mensagem.Type = ActivityTypes.Typing;
-                await context.PostAsync("Ocorreu o seguinte erro: " + erro);
+                await reply.QuickReplyMessage(context, "Opa opa opa. Tive uns problemas internos. Vamos voltar pro inicio");
+                await cards.AdaptiveCard(context, "Inicio");
             }
             catch (Exception e)
             {

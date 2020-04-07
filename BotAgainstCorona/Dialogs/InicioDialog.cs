@@ -9,29 +9,31 @@ namespace BotAgainstCorona.Dialogs
 {
     [Serializable]
     [LuisModel("4200aec6-fbaa-4c59-bc55-6b98bbfd3e39", "454872db14ad488183f35cff776f91df", domain: "brazilsouth.api.cognitive.microsoft.com")]
-    public class Inicio : LuisDialog<object>
+    public class InicioDialog : LuisDialog<object>
     {
-        public readonly Util Util = new Util();
+        public readonly UtilDialog Util = new UtilDialog();
         private string _erro { get; set; }
         private string _retornoFormulario { get; set; }
-        public Inicio(string msg = "", string retornoFormulario = "")
-        {
-            _erro = msg;
-            _retornoFormulario = retornoFormulario;
-           
-        }
+        
         
         [LuisIntent("inicio")]
-        public async Task InicioDialog(IDialogContext context, LuisResult result)
+        public async Task Inicio(IDialogContext context, LuisResult result)
         {
             await Util.Inicio(context);
            
         }
 
-        [LuisIntent("Sintomas")]
-        public async Task Sintomas(IDialogContext context, LuisResult result)
+        [LuisIntent("Sexo")]
+        public async Task Sexo(IDialogContext context, LuisResult result)
         {
-            await Util.Sintomas(context, "Sintomas", _retornoFormulario);
+            await Util.Sexo(context);
+        }
+
+
+        [LuisIntent("Doencas")]
+        public async Task Doencas(IDialogContext context, LuisResult result)
+        {
+            await Util.Doencas(context, "Doencas");
         }
 
         [LuisIntent("VerificarSintomas")]

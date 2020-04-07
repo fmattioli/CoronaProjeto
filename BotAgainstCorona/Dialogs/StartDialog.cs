@@ -9,7 +9,7 @@ namespace BotAgainstCorona.Dialogs
     public class StartDialog : IDialog<object>
     {
 
-        public readonly Util Util = new Util();
+        public readonly UtilDialog Util = new UtilDialog();
 
         public Task StartAsync(IDialogContext context)
         {

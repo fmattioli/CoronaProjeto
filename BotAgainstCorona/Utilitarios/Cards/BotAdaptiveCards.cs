@@ -15,7 +15,7 @@ namespace BotAgainstCorona.Utilitarios.Cards
         {
             try
             {
-                await AdaptiveCard(context, nomeJSON, "{Nome}", wordReplace);
+                await AdaptiveCard(context, nomeJSON);
             }
             catch (Exception erro)
             {
@@ -25,20 +25,15 @@ namespace BotAgainstCorona.Utilitarios.Cards
             }
         }
 
-        public async Task AdaptiveCard(IDialogContext context, string nomeJSON, string origemReplace = "", string destinoReplace = "")
+        public async Task AdaptiveCard(IDialogContext context, string nomeJSON)
         {
             var returnMessage = context.MakeMessage();
             var json = URL($"https://coronaagainscorona.000webhostapp.com/Json/{nomeJSON}.json");
-            if (!string.IsNullOrEmpty(destinoReplace))
-            {
-                json = json.Replace(origemReplace, origemReplace);
-            }
             var results = AdaptiveCards.AdaptiveCard.FromJson(json);
             var card = results.Card;
 
             returnMessage.Attachments.Add(new Attachment()
             {
-
                 Content = card,
                 ContentType = AdaptiveCards.AdaptiveCard.ContentType,
                 Name = "Card"
