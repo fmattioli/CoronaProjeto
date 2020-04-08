@@ -155,7 +155,9 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\BotAgainstCorona - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\BotAgainstCorona - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\BotAgainstCorona - ReadOnly - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - Web Deploy1.pubxml" />
     <Content Include="Utilitarios\Formularios\Escala.json" />
@@ -163,6 +165,7 @@
     <Content Include="Utilitarios\Formularios\Sintomas.json" />
     <Content Include="Utilitarios\Formularios\Doencas.json" />
     <Content Include="Utilitarios\Formularios\Sinais.json" />
+    <None Include="Properties\PublishProfiles\BotAgainstCorona - Web Deploy2.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

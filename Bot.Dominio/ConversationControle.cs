@@ -58,6 +58,26 @@ namespace Bot.Dominio
                     outrosSintomas = JsonConvert.DeserializeObject<OutrosSintomas>(retornoJSON);
                     RetornoValidacao = ValidarFormularioDoencas(outrosSintomas);
                     return RetornoValidacao == null ? "Prosseguir para checar a respiracao do usuário" : RetornoValidacao;
+                case "Respiracao":
+                    Respiracao respiracao = new Respiracao();
+                    respiracao = JsonConvert.DeserializeObject<Respiracao>(retornoJSON);
+                    RetornoValidacao = ValidarFormularioDoencas(respiracao); 
+                    return RetornoValidacao == null ? "Prosseguir para checar sintomas diferenciados" : RetornoValidacao;
+                case "DiferentesSintomas":
+                    DiferentesSintomas diferentesSintomas = new DiferentesSintomas();
+                    diferentesSintomas = JsonConvert.DeserializeObject<DiferentesSintomas>(retornoJSON);
+                    RetornoValidacao = ValidarFormularioDoencas(diferentesSintomas); 
+                    return RetornoValidacao == null ? "Prosseguir para o periodo de tempo dos sintomas" : RetornoValidacao;
+                case "Periodo":
+                    PeriodoUsuario periodoUsuario= new PeriodoUsuario();
+                    periodoUsuario = JsonConvert.DeserializeObject<PeriodoUsuario>(retornoJSON);
+                    RetornoValidacao = ValidateAnswerOneOption(periodoUsuario);
+                    return RetornoValidacao == null ? "Prosseguir para o uso de substancias viciantes" : RetornoValidacao;
+                case "Substancias":
+                    SubstanciasUsuario substanciasUsuario = new SubstanciasUsuario();
+                    substanciasUsuario = JsonConvert.DeserializeObject<SubstanciasUsuario>(retornoJSON);
+                    RetornoValidacao = ValidateAnswerOneOption(substanciasUsuario);
+                    return RetornoValidacao == null ? "Prosseguir para o resultado" : RetornoValidacao;
 
                 //    Escala escala = new Escala();
                 //    escala = JsonConvert.DeserializeObject<Escala>(retornoJSON);
@@ -154,8 +174,14 @@ namespace Bot.Dominio
                                 return "formulário de sintomas preenchido de forma incorreta";
                             case "OutrosSintomas":
                                 return "formulário de sintomas preenchido de forma incorreta";
-
-
+                            case "Respiracao":
+                                return "formulário de sintomas preenchido de forma incorreta";
+                            case "DiferentesSintomas":
+                                return "formulário de sintomas preenchido de forma incorreta";
+                            case "Periodo":
+                                return "formulário de sintomas preenchido de forma incorreta";
+                            case "Substancias":
+                                return "formulário de sintomas preenchido de forma incorreta";
                             default:
                                 break;
                         }

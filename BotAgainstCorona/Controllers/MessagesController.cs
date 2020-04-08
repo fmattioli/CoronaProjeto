@@ -36,7 +36,7 @@ namespace BotAgainstCorona
                     activity.Type = ActivityTypes.Message;
                     var connector = new ConnectorClient(new System.Uri(activity.ServiceUrl));
                     Activity isTyping = activity.CreateReply();
-                    Thread.Sleep(2000);
+                    Thread.Sleep(500);
                     isTyping.Type = ActivityTypes.Typing;
                     await connector.Conversations.ReplyToActivityAsync(isTyping);
                     if (activity.Value != null)

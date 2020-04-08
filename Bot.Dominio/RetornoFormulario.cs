@@ -39,17 +39,37 @@ namespace Bot.Dominio
 
     public class OutrosSintomas
     {
-        public string DorMuscular { get; set; }
-        public string DorArticulacoes { get; set; }
-        public string TosseSeca { get; set; }
-        public string Febre { get; set; }
-        public string Diarreia { get; set; }
-        public string RespiracaoCurtaRaza { get; set; }
-        public string SensacaoDesmaio { get; set; }
-        public string Enjoo { get; set; }
-        public string Nenhum { get; set; }
+        public bool DorMuscular { get; set; }
+        public bool DorArticulacoes { get; set; }
+        public bool TosseSeca { get; set; }
+        public bool Febre { get; set; }
+        public bool Diarreia { get; set; }
+        public bool RespiracaoCurtaRaza { get; set; }
+        public bool SensacaoDesmaio { get; set; }
+        public bool Enjoo { get; set; }
+        public bool Nenhum { get; set; }
     }
-
+    public class Respiracao
+    {
+        public bool FaltaAr { get; set; }
+        public bool DificuldadeRespirar { get; set; }
+        public bool DorPeito { get; set; }
+        public bool Nenhum { get; set; }
+    }
+    public class DiferentesSintomas
+    {
+        public bool ConfusaoAlerta { get; set; }
+        public bool LabiosAzulPalido { get; set; }
+        public bool Nenhum { get; set; }
+    }
+    public class PeriodoUsuario
+    {
+        public string Periodo { get; set; }
+    }
+    public class SubstanciasUsuario
+    {
+        public string Substancias { get; set; }
+    }
 
     public class FinalJSON
     {

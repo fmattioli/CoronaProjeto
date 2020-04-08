@@ -16,7 +16,7 @@ namespace BotAgainstCorona.Dialogs
     {
         public readonly UtilDialog Util = new UtilDialog();
         private string _erro { get; set; }
-        private Dictionary<string, string> dictonary = new Dictionary<string, string>();
+        private Dictionary<string, dynamic> dictonary = new Dictionary<string, dynamic>();
         private bool _cardSintomas { get; set; }
         private bool _erroCardOutrosSintomas { get; set; }
 
@@ -38,11 +38,12 @@ namespace BotAgainstCorona.Dialogs
         {
             if (!result.Query.Contains("formulário de doencas que o usuário já teve está preenchido de forma incorreta"))
             {
-                await Util.Doencas(context, "Doencas", false);
                 AppendResultsJson(context);
+                await Util.Doencas(context, "Doencas", false);
             }
             else
             {
+                AppendResultsJson(context);
                 await Util.Doencas(context, "Doencas", true);
             }
         }
@@ -53,18 +54,19 @@ namespace BotAgainstCorona.Dialogs
             if (!_cardSintomas || result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
             {
                 bool erroFormulario = false;
-                if(result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
+                if (result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
                 {
                     erroFormulario = true;
                 }
 
-                _cardSintomas = false;
                 AppendResultsJson(context);
+                _cardSintomas = false;
                 await Util.Sintomas(context, "Sintomas", _cardSintomas, erroFormulario);
                 _cardSintomas = true; //Existem dois formularios de sintomas, deste modo é necessário setar a variavel pra true pra exibir o outro formulario de sintomas
             }
             else
             {
+                AppendResultsJson(context);
                 await Util.Sintomas(context, "OutrosSintomas", _cardSintomas);
             }
         }
@@ -72,7 +74,28 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Respiracao")]
         public async Task Respiracao(IDialogContext context, LuisResult result)
         {
-            await Util.Respiracao(context);
+                AppendResultsJson(context);
+                await Util.Respiracao(context);
+        }
+
+        [LuisIntent("DiferentesSintomas")]
+        public async Task DiferentesSintomas(IDialogContext context, LuisResult result)
+        {
+            AppendResultsJson(context);
+            await Util.DiferentesSintomas(context);
+        }
+
+        [LuisIntent("PeriodoSintomas")]
+        public async Task PeriodoSintomas(IDialogContext context, LuisResult result)
+        {
+            AppendResultsJson(context);
+            await Util.PeriodoSintomas(context);
+        }
+        [LuisIntent("Substancias")]
+        public async Task Substancias(IDialogContext context, LuisResult result)
+        {
+            AppendResultsJson(context);
+            await Util.Substancias(context);
         }
 
         [LuisIntent("Erro")]
@@ -92,10 +115,31 @@ namespace BotAgainstCorona.Dialogs
             Activity activity = (Activity)context.Activity;
             JavaScriptSerializer jss = new JavaScriptSerializer();
             var retornoJSON = jss.Deserialize<dynamic>(activity.Value.ToString().Replace("{{", "{{").Replace("}}", "}"));
-            //foreach (var item in retornoJSON)
-            //{
-            //    dictonary.Add(item.Key, item.Value);
-            //}
+            if (retornoJSON.Count > 1)
+            {
+                Dictionary<string, dynamic> dicAlter = new Dictionary<string, dynamic>();
+                string[] chaves  = new string[retornoJSON.Count];
+                string[] valores  = new string[retornoJSON.Count];
+                retornoJSON.Keys.CopyTo(chaves, 0);
+                retornoJSON.Values.CopyTo(valores, 0);
+                for (int i = 1; i < retornoJSON.Count; i++)
+                {
+                    dicAlter.Add(chaves[i], valores[i]);
+                }
+                //foreach (var item in retornoJSON)
+                //{
+                //    dicAlter.Add(item.Key, item.Value);
+                //}
+                dictonary.Add(chaves[0], dicAlter);
+            }
+            else
+            {
+                foreach (var item in retornoJSON)
+                {
+                    dictonary.Add(item.Key, item.Value);
+                }
+            }
+
         }
     }
 }
