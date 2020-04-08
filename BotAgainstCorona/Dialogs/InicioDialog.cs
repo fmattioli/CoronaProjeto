@@ -18,6 +18,7 @@ namespace BotAgainstCorona.Dialogs
         private string _erro { get; set; }
         private Dictionary<string, string> dictonary = new Dictionary<string, string>();
         private bool _cardSintomas { get; set; }
+        private bool _erroCardOutrosSintomas { get; set; }
 
         [LuisIntent("inicio")]
         public async Task Inicio(IDialogContext context, LuisResult result)
@@ -32,11 +33,9 @@ namespace BotAgainstCorona.Dialogs
             await Util.Sexo(context);
         }
 
-
         [LuisIntent("Doencas")]
         public async Task Doencas(IDialogContext context, LuisResult result)
         {
-            
             if (!result.Query.Contains("formulário de doencas que o usuário já teve está preenchido de forma incorreta"))
             {
                 await Util.Doencas(context, "Doencas", false);
@@ -46,24 +45,36 @@ namespace BotAgainstCorona.Dialogs
             {
                 await Util.Doencas(context, "Doencas", true);
             }
-            
         }
 
         [LuisIntent("Sintomas")]
         public async Task Sintomas(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
-            if (!_cardSintomas)
+            if (!_cardSintomas || result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
             {
-                await Util.Sintomas(context, "Sintomas", _cardSintomas);
+                bool erroFormulario = false;
+                if(result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
+                {
+                    erroFormulario = true;
+                }
+
+                _cardSintomas = false;
+                AppendResultsJson(context);
+                await Util.Sintomas(context, "Sintomas", _cardSintomas, erroFormulario);
                 _cardSintomas = true; //Existem dois formularios de sintomas, deste modo é necessário setar a variavel pra true pra exibir o outro formulario de sintomas
             }
             else
             {
-                await Util.Sintomas(context, "SintomasParte2", _cardSintomas);
+                await Util.Sintomas(context, "OutrosSintomas", _cardSintomas);
             }
         }
-        
+
+        [LuisIntent("Respiracao")]
+        public async Task Respiracao(IDialogContext context, LuisResult result)
+        {
+            await Util.Respiracao(context);
+        }
+
         [LuisIntent("Erro")]
         public async Task Erro(IDialogContext context, LuisResult result)
         {
@@ -81,10 +92,10 @@ namespace BotAgainstCorona.Dialogs
             Activity activity = (Activity)context.Activity;
             JavaScriptSerializer jss = new JavaScriptSerializer();
             var retornoJSON = jss.Deserialize<dynamic>(activity.Value.ToString().Replace("{{", "{{").Replace("}}", "}"));
-            foreach (var item in retornoJSON)
-            {
-                dictonary.Add(item.Key, item.Value);
-            }
+            //foreach (var item in retornoJSON)
+            //{
+            //    dictonary.Add(item.Key, item.Value);
+            //}
         }
     }
 }

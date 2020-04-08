@@ -71,38 +71,7 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
-
         
-        public async Task InicioBem(IDialogContext context, LuisResult result)
-        {
-            try
-            {
-                await reply.QuickReplyDoisBotoes(context, $"Isto é ótimo! {Nome} Mesmo assim, me sinto na obrigação de perguntar... Você deseja checar os sintomas que o CoronaVirus causa?", "Checagem de sintomas (tosse, febre, dor de garganta)", "Não tenho interesse");
-            }
-            catch (Exception erro)
-            {
-                var mensagem = context.MakeMessage();
-                mensagem.Type = ActivityTypes.Typing;
-                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
-            }
-        }
-
-        public async Task InicioMal(IDialogContext context, string nomeJSON)
-        {
-            try
-            {
-                await reply.QuickReplyMessage(context, $"{Nome}, me diga o que você está sentindo?");
-                await cards.AdaptiveCard(context, nomeJSON);
-            }
-            catch (Exception erro)
-            {
-                var mensagem = context.MakeMessage();
-                mensagem.Type = ActivityTypes.Typing;
-                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
-            }
-
-        }
-
         public async Task Doencas(IDialogContext context, string nomeJSON, bool retorno)
         {
             try
@@ -129,20 +98,24 @@ namespace BotAgainstCorona.Dialogs
 
         }
 
-        public async Task Sintomas(IDialogContext context, string nomeJSON, bool cardSintomas)
+        public async Task Sintomas(IDialogContext context, string nomeJSON, bool cardSintomas, bool erroFormulario = false)
         {
             try
             {
-                if (cardSintomas)
+                if (!cardSintomas)
                 {
-                    await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora preciso que você me diga como você está se sentindo...");
+                    if(!erroFormulario)
+                        await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora preciso que você me diga como você está se sentindo...");
+                    else
+                        await reply.QuickReplyMessage(context, $"Opa, você precisa selecionar ao menos um! Agora preciso que você me diga como você está se sentindo...");
+
                     await reply.QuickReplyMessage(context, $"Selecione abaixo os sintomas que você está tendo. Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
                     await cards.AdaptiveCard(context, nomeJSON);
                 }
                 else
                 {
 
-                    await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora a minha pergunta continua sendo sobre seus sintomas, mas veja que os sintomas mudaram...");
+                    await reply.QuickReplyMessage(context, $"Anotei sua resposta! Agora a minha próxima pergunta continua sendo sobre seus sintomas.");
                     await reply.QuickReplyMessage(context, $"Selecione abaixo os sintomas que você está tendo. Ahhh e lembre-se, caso não tenha nenhuma basta clicar em: Nenhuma das anteriores");
                     await cards.AdaptiveCard(context, nomeJSON);
                 }
@@ -155,11 +128,13 @@ namespace BotAgainstCorona.Dialogs
             }
 
         }
-        public async Task PeriodoSintomas(IDialogContext context, string nomeJSON)
+
+        public async Task Respiracao(IDialogContext context)
         {
             try
             {
-                await cards.AdaptiveCard(context, nomeJSON);
+                await reply.QuickReplyMessage(context, $"Certo, anotei as respostas sobre os seus sintomas, agora me responde algumas coisas pela sua respiração?");
+                await cards.AdaptiveCard(context, "Respiracao");
             }
             catch (Exception erro)
             {
@@ -168,7 +143,7 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
-
+        
         private async Task retornoIntentInformacoesPessoaisSexo(IDialogContext context, IAwaitable<string> result)
         {
             try

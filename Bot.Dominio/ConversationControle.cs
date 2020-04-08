@@ -48,6 +48,16 @@ namespace Bot.Dominio
                     doencas = JsonConvert.DeserializeObject<Doencas>(retornoJSON);
                     RetornoValidacao = ValidarFormularioDoencas(doencas);
                     return RetornoValidacao == null ? "Prosseguir para a verificar os sintomas que o usuário está sentindo ou já sentiu" : RetornoValidacao;
+                case "Sintomas":
+                    Sintomas sintomas = new Sintomas();
+                    sintomas = JsonConvert.DeserializeObject<Sintomas>(retornoJSON);
+                    RetornoValidacao = ValidarFormularioDoencas(sintomas);
+                    return RetornoValidacao == null ? "Prosseguir para a verificar os sintomas que o usuário está sentindo ou já sentiu" : RetornoValidacao;
+                case "OutrosSintomas":
+                    OutrosSintomas outrosSintomas = new OutrosSintomas();
+                    outrosSintomas = JsonConvert.DeserializeObject<OutrosSintomas>(retornoJSON);
+                    RetornoValidacao = ValidarFormularioDoencas(outrosSintomas);
+                    return RetornoValidacao == null ? "Prosseguir para checar a respiracao do usuário" : RetornoValidacao;
 
                 //    Escala escala = new Escala();
                 //    escala = JsonConvert.DeserializeObject<Escala>(retornoJSON);
@@ -112,16 +122,17 @@ namespace Bot.Dominio
         }
 
         
-        public string ValidarFormularioDoencas(Doencas doencas)
+        public string ValidarFormularioDoencas(object doencas)
         {
+            var tipo = doencas.GetType();
             List<int> itensFalsos = new List<int>();
-            PropertyInfo[] properties = typeof(Doencas).GetProperties();
+            PropertyInfo[] properties = tipo.GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 var value = property.GetValue(doencas);
                 if (bool.Parse(value.ToString()))
                 {
-                    if (doencas.Nenhuma)
+                    if (property.Name == "Nenhuma" && bool.Parse(value.ToString()))
                     {
                         return null;
                     }
@@ -133,40 +144,28 @@ namespace Bot.Dominio
                 else
                 {
                     itensFalsos.Add(1);
-                    if (itensFalsos.Count == 5)
-                        return "formulário de doencas que o usuário já teve está preenchido de forma incorreta";
-                }
-            }
-            return "formulário de sintomas preenchido de forma incorreta";
-        }
+                    if (itensFalsos.Count == properties.Count())
+                    {
+                        switch (tipo.Name)
+                        {
+                            case "Doencas":
+                                return "formulário de doencas que o usuário já teve está preenchido de forma incorreta";
+                            case "Sintomas":
+                                return "formulário de sintomas preenchido de forma incorreta";
+                            case "OutrosSintomas":
+                                return "formulário de sintomas preenchido de forma incorreta";
 
-        public string ValidarFormularioSinais(Sinais sinais)
-        {
-            List<int> itensFalsos = new List<int>();
-            PropertyInfo[] properties = typeof(Sinais).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                var value = property.GetValue(sinais);
-                if (bool.Parse(value.ToString()))
-                {
-                    if (sinais.Nenhuma)
-                    {
-                        return "Usuário com sintomas e sinais comuns para o corona virus";
+
+                            default:
+                                break;
+                        }
+                       
                     }
-                    else
-                    {
-                        return "Usuário com sintomas e sinais comuns para o corona virus";
-                    }
-                }
-                else
-                {
-                    itensFalsos.Add(1);
-                    if (itensFalsos.Count == 5)
-                        return "formulário de sintomas preenchido de forma incorreta";
                 }
             }
             return "formulário de sintomas preenchido de forma incorreta";
         }
+        
         
     }
 }

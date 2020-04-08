@@ -5,22 +5,14 @@ using System.Web;
 
 namespace Bot.Dominio
 {
-    public class Escala
+    public class IdadeUsuario
     {
-        public string Sentimento {get; set; }
-        
+        public string Idade { get; set; }
     }
-    public class Sintomas
+
+    public class SexoUsuario
     {
-        public bool DificuldadeRespirar { get; set; }
-        public bool Febre { get; set; }
-        public bool Tosse { get; set; }
-        public bool DorGarganta { get; set; }
-        public bool Nenhuma { get; set; }
-    }
-    public class PeriodoSintomas
-    {
-        public string Periodo { get; set; }
+        public string Sexo { get; set; }
     }
 
     public class Doencas
@@ -32,31 +24,36 @@ namespace Bot.Dominio
         public bool Nenhuma { get; set; }
     }
 
-    public class Sinais
+    public class Sintomas
     {
-        public bool Palidez { get; set; }
-        public bool BocaPontaDedosRoxa { get; set; }
-        public bool RespirarBaixo { get; set; }
-        public bool PressaoBaixa { get; set; }
+        public bool GargantaCocando { get; set; }
+        public bool DorGarganta { get; set; }
+        public bool NarizEntupido { get; set; }
+        public bool NarizEscorrendo { get; set; }
+        public bool Espirros { get; set; }
+        public bool OlhosLacrimejando { get; set; }
+        public bool OlhosInchados { get; set; }
         public bool Nenhuma { get; set; }
     }
 
-    public class IdadeUsuario
+
+    public class OutrosSintomas
     {
-        public string Idade { get; set; }
+        public string DorMuscular { get; set; }
+        public string DorArticulacoes { get; set; }
+        public string TosseSeca { get; set; }
+        public string Febre { get; set; }
+        public string Diarreia { get; set; }
+        public string RespiracaoCurtaRaza { get; set; }
+        public string SensacaoDesmaio { get; set; }
+        public string Enjoo { get; set; }
+        public string Nenhum { get; set; }
     }
 
-    public class SexoUsuario
-    {
-        public string Sexo { get; set; }
-    }
 
     public class FinalJSON
     {
         public string Idade { get; set; }
     }
-
-
-
 
 }
