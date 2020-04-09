@@ -188,6 +188,20 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
+        public async Task Resultado(IDialogContext context)
+        {
+            try
+            {
+                await reply.QuickReplyMessage(context, $"O seu resultado é:");
+                await cards.AdaptiveCard(context, "Resultado");
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
 
         private async Task retornoIntentInformacoesPessoaisSexo(IDialogContext context, IAwaitable<string> result)
         {

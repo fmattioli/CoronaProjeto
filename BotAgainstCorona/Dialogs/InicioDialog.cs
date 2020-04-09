@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Microsoft.Bot.Builder.Dialogs;
@@ -98,6 +99,24 @@ namespace BotAgainstCorona.Dialogs
             await Util.Substancias(context);
         }
 
+        public async Task Resultado(IDialogContext context, LuisResult result)
+        {
+            var Sintomas = dictonary["Sintomas"].Count;
+            var OutrosSintomas = dictonary["OutrosSintomas"].Count;
+            var Respiracao = dictonary["Respiracao"].Count;
+            var DiferentesSintomas = dictonary["DiferentesSintomas"].Count;
+            if (Sintomas <= 2)
+            {
+                if (OutrosSintomas >= 1)
+                {
+                    if (Respiracao >= 1 && DiferentesSintomas >= 1)
+                    {
+                        await Util.Resultado(context);
+                    }
+                }
+            }
+        }
+
         [LuisIntent("Erro")]
         public async Task Erro(IDialogContext context, LuisResult result)
         {
@@ -124,12 +143,11 @@ namespace BotAgainstCorona.Dialogs
                 retornoJSON.Values.CopyTo(valores, 0);
                 for (int i = 1; i < retornoJSON.Count; i++)
                 {
-                    dicAlter.Add(chaves[i], valores[i]);
+                    if (Boolean.Parse(valores[i]) == true)
+                    {
+                        dicAlter.Add(chaves[i], valores[i]);
+                    }
                 }
-                //foreach (var item in retornoJSON)
-                //{
-                //    dicAlter.Add(item.Key, item.Value);
-                //}
                 dictonary.Add(chaves[0], dicAlter);
             }
             else
