@@ -1,0 +1,25 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "RichTextBlock",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "Caso opte por se deslocar para um serviço de urgência, siga as seguintes medidas de proteção individual e etiqueta respiratória:\n- Opte por ter um acompanhante para auxiliá-lo no deslocamento até o serviço de urgência. O acompanhante deve utilizar uma máscara facial e lavar constantemente as mãos com água e sabão ou álcool em gel 70%.\n- Busque imediatamente o serviço de saúde, não faça desvios de caminho e evite transportes públicos\n- Utilize máscara facial para evitar transmissão para outras pessoas durante o trajeto para o serviço de urgência.\n- Lave as mãos frequentemente com água e sabão ou higienize com álcool 70%\n- Cubra a boca e nariz com um lenço de papel ao tossir e espirrar e jogue no lixo após o uso, ou proteja com o antebraço (cotovelo), nunca com as mãos.\n- Evite tocar os olhos, nariz e boca com as mãos não lavadas\n- Evite locais com aglomeração de pessoas\n-Não compartilhe objetos de uso pessoal"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Prosseguir",
+            "data": {
+                "ResultadoRuim1": "ResultadoRuim1"
+            }
+        }
+    ]
+}

@@ -70,7 +70,14 @@ namespace Bot.Dominio
     {
         public string Substancias { get; set; }
     }
-
+    public class ResultadoRuim
+    {
+        public string ResultadoRuim1 { get; set; }
+    }
+    public class Recomeco
+    {
+        public string Recomecar { get; set; }
+    }
     public class FinalJSON
     {
         public string Idade { get; set; }

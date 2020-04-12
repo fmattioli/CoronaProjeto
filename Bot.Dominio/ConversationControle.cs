@@ -78,6 +78,16 @@ namespace Bot.Dominio
                     substanciasUsuario = JsonConvert.DeserializeObject<SubstanciasUsuario>(retornoJSON);
                     RetornoValidacao = ValidateAnswerOneOption(substanciasUsuario);
                     return RetornoValidacao == null ? "Prosseguir para o resultado" : RetornoValidacao;
+                case "ResultadoRuim1":
+                    ResultadoRuim resultadoRuim = new ResultadoRuim();
+                    resultadoRuim = JsonConvert.DeserializeObject<ResultadoRuim>(retornoJSON);
+                    RetornoValidacao = ValidateAnswerOneOption(resultadoRuim);
+                    return RetornoValidacao == null ? "Prosseguir para o resultado" : RetornoValidacao;
+                case "Recomecar":
+                    Recomeco recomeco= new Recomeco();
+                    recomeco = JsonConvert.DeserializeObject<Recomeco>(retornoJSON);
+                    RetornoValidacao = ValidateAnswerOneOption(recomeco);
+                    return RetornoValidacao == null ? "Olá" : RetornoValidacao;
 
                 //    Escala escala = new Escala();
                 //    escala = JsonConvert.DeserializeObject<Escala>(retornoJSON);
@@ -97,7 +107,6 @@ namespace Bot.Dominio
                 //    Sinais sinais = new Sinais();
                 //    sinais = JsonConvert.DeserializeObject<Sinais>(retornoJSON);
                 //    return ValidarFormularioSinais(sinais);
-
 
                 default:
                     return null;

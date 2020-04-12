@@ -1,0 +1,56 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Qual é a sua Idade?",
+            "horizontalAlignment": "Center",
+            "height": "stretch",
+            "size": "Medium",
+            "color": "Dark"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Menor que 18 anos",
+            "Idade": "Menor18Anos",
+            "data": {
+                "Idade": "Menor18Anos"
+            },
+            "style": "positive"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "18 a 39 anos",
+            "Idade": "18A39Anos",
+            "data": {
+                "Idade": "18A39Anos"
+            },
+            "style": "positive"
+        }
+        , 
+        {
+            "type": "Action.Submit",
+            "title": "40 a 59 anos",
+            "Idade": "40A59Anos",
+            "data": {
+                "Idade": "40A59Anos"
+            },
+            "style": "positive"
+        }
+        ,
+        {
+            "type": "Action.Submit",
+            "title": "Maior que 60 anos",
+            "Idade": "Maior60Anos",
+            "data": {
+                "Idade": "Maior60Anos"
+            },
+            "style": "positive"
+        }
+    ]
+}

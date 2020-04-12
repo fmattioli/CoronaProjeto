@@ -1,0 +1,51 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "text": "Respiração",
+            "horizontalAlignment": "Left",
+            "weight": "Bolder"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Estou com falta de ar",
+            "id": "FaltaAr",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dificuldade pra respirar",
+            "id": "DificuldadeRespirar",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dor no peito",
+            "id": "DorPeito",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhum desses sintomas",
+            "id": "Nenhum",
+            "wrap": false,
+            "value": "false"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Enviar",
+            "data": {
+                "Respiracao": "Respiracao"
+            }
+        }
+    ]
+}

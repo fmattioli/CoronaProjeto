@@ -1,0 +1,42 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Qual é o seu sexo?",
+            "horizontalAlignment": "Left",
+            "height": "stretch",
+            "size": "Medium",
+            "color": "Dark"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Masculino",
+            "data": {
+                "Sexo": "Masculino"
+            },
+            "style": "positive"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Feminino",
+            "data": {
+                "Sexo": "Feminino"
+            },
+            "style": "positive"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Prefiro não responder",
+            "data": {
+                "Sexo": "NaoDivulgar"
+            },
+            "style": "positive"
+        }
+    ]
+}

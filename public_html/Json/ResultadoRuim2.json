@@ -1,0 +1,42 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "RichTextBlock",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "Baseado em suas respostas, é provável que esta situação se enquadre como caso suspeito de doença pelo coronavírus 2019 (COVID-19). No entanto, isso não se trata de um diagnóstico.\nA orientação é que você procure atendimento em um serviço de urgência mais próximo para avaliação clínica  ou disque para o SAMU 192."
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Ligue 192",
+            "data": {
+                "Recomecar": "Recomecar"
+            }
+        }
+    ,
+        {
+            "type": "Action.Submit",
+            "title": "Atendimento Pré-Clínico 0800 591 8899",
+            "data": {
+                "Recomecar": "Recomecar"
+            }
+        }
+    ,
+
+        {
+            "type": "Action.Submit",
+            "title": "Recomeçar",
+            "data": {
+                "Recomecar": "Recomecar"
+            }
+        }
+    ]
+}

@@ -1,0 +1,79 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "text": "Sintomas",
+            "horizontalAlignment": "Left",
+            "weight": "Bolder"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Garganta coçando",
+            "id": "GargantaCocando",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dor de garganta",
+            "id": "DorGarganta",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nariz entupido",
+            "id": "NarizEntupido",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nariz escorrendo",
+            "id": "NarizEscorrendo",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Espirros",
+            "id": "Espirros",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Olhos lacrimejando",
+            "id": "OlhosLacrimejando",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Olhos inchados",
+            "id": "OlhosInchados",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhuma das anteriores",
+            "id": "Nenhuma",
+            "wrap": false,
+            "value": "false"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Enviar",
+            "data": {
+                "Sintomas": "Sintomas"
+            }
+        }
+    ]
+}

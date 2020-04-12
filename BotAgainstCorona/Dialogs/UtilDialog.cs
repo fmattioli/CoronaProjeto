@@ -188,12 +188,11 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
-        public async Task Resultado(IDialogContext context)
+        public async Task ResultadoBom(IDialogContext context)
         {
             try
             {
-                await reply.QuickReplyMessage(context, $"O seu resultado é:");
-                await cards.AdaptiveCard(context, "Resultado");
+                await cards.AdaptiveCard(context, "ResultadoBom");
             }
             catch (Exception erro)
             {
@@ -202,6 +201,28 @@ namespace BotAgainstCorona.Dialogs
                 await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
             }
         }
+        public async Task ResultadoRuim(IDialogContext context, bool _cardResultadoMal)
+        {
+            try
+            {
+                if (_cardResultadoMal)
+                {
+                    await reply.QuickReplyMessage(context, $"O seu resultado é:");
+                    await cards.AdaptiveCard(context, "ResultadoRuim1");
+                }
+                else
+                {
+                    await cards.AdaptiveCard(context, "ResultadoRuim2");
+                }
+            }
+            catch (Exception erro)
+            {
+                var mensagem = context.MakeMessage();
+                mensagem.Type = ActivityTypes.Typing;
+                await context.PostAsync("Ocorreu o seguinte erro: " + erro.Message.ToString());
+            }
+        }
+
 
         private async Task retornoIntentInformacoesPessoaisSexo(IDialogContext context, IAwaitable<string> result)
         {

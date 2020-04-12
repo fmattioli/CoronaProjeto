@@ -1,0 +1,59 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "A quanto tempo você tem esses sintomas?",
+            "size": "Large",
+            "spacing": "Medium",
+            "horizontalAlignment": "Center",
+            "height": "stretch",
+            "weight": "Bolder"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Comecei a sentir hoje",
+            "data": {
+                "Periodo": "Hoje"
+            },
+            "id": "1"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Começei há uma semana mais ou menos",
+            "data": {
+                "Periodo": "UmaSemanas"
+            },
+            "id": "2"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Entre 8 dias a duas semanas",
+            "data": {
+                "Periodo": "DuasSemanas"
+            },
+            "id": "3"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Há mais de duas semanas",
+            "data": {
+                "Periodo": "TresSemanas"
+            },
+            "id": "4"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Não estou sentindo nenhum sintoma",
+            "data": {
+                "Periodo": "Nenhuma"
+            },
+            "id": "5"
+        }
+    ]
+}

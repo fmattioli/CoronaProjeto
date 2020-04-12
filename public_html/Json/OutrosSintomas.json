@@ -1,0 +1,87 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "text": "Sintomas",
+            "horizontalAlignment": "Left",
+            "weight": "Bolder"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dor muscular",
+            "id": "DorMuscular",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Dor nas articulações",
+            "id": "DorArticulacoes",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Tosse seca",
+            "id": "TosseSeca",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Febre",
+            "id": "Febre",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Diarreia",
+            "id": "Diarreia",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Respiração curta e razao",
+            "id": "RespiracaoCurtaRaza",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Sensação de desmaio",
+            "id": "SensacaoDesmaio",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Enjôo",
+            "id": "Enjoo",
+            "wrap": false,
+            "value": "false"
+        }
+        ,
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhum desses sintomas",
+            "id": "Nenhum",
+            "wrap": false,
+            "value": "false"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Enviar",
+            "data": {
+                "OutrosSintomas": "OutrosSintomas"
+            }
+        }
+    ]
+}

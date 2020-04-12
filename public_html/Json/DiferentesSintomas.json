@@ -1,0 +1,44 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "text": "Sintomas Diferenciados",
+            "horizontalAlignment": "Left",
+            "weight": "Bolder"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Confusão mental ou dificuldade em permanecer alerta",
+            "id": "ConfusaoAlerta",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Lábios ou rosto azulados ou muito palidos",
+            "id": "LabiosAzulPalido",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhum desses sintomas",
+            "id": "Nenhum",
+            "wrap": false,
+            "value": "false"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Enviar",
+            "data": {
+                "DiferentesSintomas": "DiferentesSintomas"
+            }
+        }
+    ]
+}

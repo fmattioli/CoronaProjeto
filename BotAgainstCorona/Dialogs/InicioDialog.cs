@@ -19,11 +19,13 @@ namespace BotAgainstCorona.Dialogs
         private string _erro { get; set; }
         private Dictionary<string, dynamic> dictonary = new Dictionary<string, dynamic>();
         private bool _cardSintomas { get; set; }
+        private bool _cardResultadoMal = true;
         private bool _erroCardOutrosSintomas { get; set; }
 
         [LuisIntent("inicio")]
         public async Task Inicio(IDialogContext context, LuisResult result)
         {
+            dictonary.Clear();
             await Util.Inicio(context);
         }
 
@@ -75,8 +77,8 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Respiracao")]
         public async Task Respiracao(IDialogContext context, LuisResult result)
         {
-                AppendResultsJson(context);
-                await Util.Respiracao(context);
+            AppendResultsJson(context);
+            await Util.Respiracao(context);
         }
 
         [LuisIntent("DiferentesSintomas")]
@@ -99,22 +101,25 @@ namespace BotAgainstCorona.Dialogs
             await Util.Substancias(context);
         }
 
+        [LuisIntent("Resultado")]
         public async Task Resultado(IDialogContext context, LuisResult result)
         {
             var Sintomas = dictonary["Sintomas"].Count;
             var OutrosSintomas = dictonary["OutrosSintomas"].Count;
             var Respiracao = dictonary["Respiracao"].Count;
             var DiferentesSintomas = dictonary["DiferentesSintomas"].Count;
-            if (Sintomas <= 2)
+            if (Sintomas >= 2)
             {
                 if (OutrosSintomas >= 1)
                 {
                     if (Respiracao >= 1 && DiferentesSintomas >= 1)
                     {
-                        await Util.Resultado(context);
+                        await Util.ResultadoRuim(context, _cardResultadoMal);
+                        _cardResultadoMal = false;
                     }
                 }
             }
+            await Util.ResultadoBom(context);
         }
 
         [LuisIntent("Erro")]
@@ -137,13 +142,13 @@ namespace BotAgainstCorona.Dialogs
             if (retornoJSON.Count > 1)
             {
                 Dictionary<string, dynamic> dicAlter = new Dictionary<string, dynamic>();
-                string[] chaves  = new string[retornoJSON.Count];
-                string[] valores  = new string[retornoJSON.Count];
+                string[] chaves = new string[retornoJSON.Count];
+                string[] valores = new string[retornoJSON.Count];
                 retornoJSON.Keys.CopyTo(chaves, 0);
                 retornoJSON.Values.CopyTo(valores, 0);
                 for (int i = 1; i < retornoJSON.Count; i++)
                 {
-                    if (Boolean.Parse(valores[i]) == true)
+                    if (Boolean.Parse(valores[i]) == true && chaves[i] != "Nenhum" && chaves[i] != "Nenhuma")
                     {
                         dicAlter.Add(chaves[i], valores[i]);
                     }

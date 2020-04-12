@@ -1,0 +1,57 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "text": "Possui alguma doença? Selecione abaixo:",
+            "horizontalAlignment": "Left"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Diabetes",
+            "id": "Diabetes",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Doença Renal Crônica",
+            "id": "RenalCronica",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Doença respiratória crônica",
+            "id": "RespiratoriaCronica",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Pressão alta",
+            "id": "PressaoAlta",
+            "wrap": false,
+            "value": "false"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Nenhuma das anteriores",
+            "id": "Nenhuma",
+            "wrap": false,
+            "value": "false"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Prosseguir",
+            "data": {
+                "Doencas": "Doencas"
+            }
+        }
+    ]
+}
