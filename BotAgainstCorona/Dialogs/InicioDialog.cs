@@ -11,7 +11,7 @@ using Microsoft.Bot.Connector;
 namespace BotAgainstCorona.Dialogs
 {
     [Serializable]
-    [LuisModel("4200aec6-fbaa-4c59-bc55-6b98bbfd3e39", "454872db14ad488183f35cff776f91df", domain: "brazilsouth.api.cognitive.microsoft.com")]
+    [LuisModel("9e0cadd0-e44d-4c83-b40f-824a2266c6ee", "fdfa4dfc5a714e7aab1f42ad817acf4a")]
 
     public class InicioDialog : LuisDialog<object>
     {
