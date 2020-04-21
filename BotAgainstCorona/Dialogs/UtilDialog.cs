@@ -149,7 +149,7 @@ namespace BotAgainstCorona.Dialogs
             try
             {
                 await reply.QuickReplyMessage(context, $"Perfeito");
-                await reply.QuickReplyMessage(context, $"E esses sintomas, voce anda sentindo eles recentemente?");
+                await reply.QuickReplyMessage(context, $"E esses sintomas, você anda sentindo eles recentemente?");
                 await cards.AdaptiveCard(context, "DiferentesSintomas");
             }
             catch (Exception erro)
@@ -163,7 +163,7 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await reply.QuickReplyMessage(context, $"A quanto tempo voce esta sentindo estes sintomas?");
+                await reply.QuickReplyMessage(context, $"A quanto tempo você esta sentindo estes sintomas?");
                 await cards.AdaptiveCard(context, "PeriodoSintomas");
             }
             catch (Exception erro)
@@ -178,7 +178,7 @@ namespace BotAgainstCorona.Dialogs
         {
             try
             {
-                await reply.QuickReplyMessage(context, $"Voce faz uso de cigarros ou bebidas alcoolicas?");
+                await reply.QuickReplyMessage(context, $"você faz uso de cigarros ou bebidas alcoolicas?");
                 await cards.AdaptiveCard(context, "Substancias");
             }
             catch (Exception erro)
@@ -309,8 +309,8 @@ namespace BotAgainstCorona.Dialogs
             {
                 var mensagem = context.MakeMessage();
                 mensagem.Type = ActivityTypes.Typing;
-                await reply.QuickReplyMessage(context, "Opa opa opa. Tive uns problemas internos. Vamos voltar pro inicio");
-                await cards.AdaptiveCard(context, "Inicio");
+                await reply.QuickReplyMessage(context, erro);
+              
             }
             catch (Exception e)
             {

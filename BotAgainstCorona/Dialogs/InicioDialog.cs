@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using Bot.Dados;
+using Bot.Data;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using Microsoft.Bot.Connector;
+
 
 namespace BotAgainstCorona.Dialogs
 {
@@ -16,15 +19,20 @@ namespace BotAgainstCorona.Dialogs
     public class InicioDialog : LuisDialog<object>
     {
         public readonly UtilDialog Util = new UtilDialog();
+        ApiGoogleSheets dados = new ApiGoogleSheets();
+
         private string _erro { get; set; }
         private Dictionary<string, dynamic> dictonary = new Dictionary<string, dynamic>();
         private bool _cardSintomas { get; set; }
         private bool _cardResultadoMal = true;
         private bool _erroCardOutrosSintomas { get; set; }
+        public string NomeCard { get; set; }
+        public string JSON { get; set; }
 
         [LuisIntent("inicio")]
         public async Task Inicio(IDialogContext context, LuisResult result)
         {
+            NomeCard = "Idade";
             dictonary.Clear();
             await Util.Inicio(context);
         }
@@ -32,8 +40,11 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Sexo")]
         public async Task Sexo(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
+            string json = string.Empty;
+            AppendResultsJson(context, out json);
+            dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), json.ToString());
             await Util.Sexo(context);
+ 
         }
 
         [LuisIntent("Doencas")]
@@ -41,12 +52,16 @@ namespace BotAgainstCorona.Dialogs
         {
             if (!result.Query.Contains("formulário de doencas que o usuário já teve está preenchido de forma incorreta"))
             {
-                AppendResultsJson(context);
+                NomeCard = "Sexo";
+                string json = string.Empty;
+                AppendResultsJson(context, out json);
+                //dados.InserirDadosConversa(NomeCard, json);
                 await Util.Doencas(context, "Doencas", false);
             }
             else
             {
-                AppendResultsJson(context);
+                string json = string.Empty;
+                AppendResultsJson(context, out json);
                 await Util.Doencas(context, "Doencas", true);
             }
         }
@@ -56,20 +71,26 @@ namespace BotAgainstCorona.Dialogs
         {
             if (!_cardSintomas || result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
             {
+                NomeCard = "Doencas";
                 bool erroFormulario = false;
                 if (result.Query.Contains("formulário de sintomas preenchido de forma incorreta"))
                 {
                     erroFormulario = true;
                 }
 
-                AppendResultsJson(context);
+                string json = string.Empty;
+                AppendResultsJson(context, out json);
+                if(!erroFormulario)
+                   // dados.InserirDadosConversa(NomeCard, json);
+
                 _cardSintomas = false;
                 await Util.Sintomas(context, "Sintomas", _cardSintomas, erroFormulario);
                 _cardSintomas = true; //Existem dois formularios de sintomas, deste modo é necessário setar a variavel pra true pra exibir o outro formulario de sintomas
             }
             else
             {
-                AppendResultsJson(context);
+                string json = string.Empty;
+                AppendResultsJson(context, out json);
                 await Util.Sintomas(context, "OutrosSintomas", _cardSintomas);
             }
         }
@@ -77,27 +98,31 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Respiracao")]
         public async Task Respiracao(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
+            string json = string.Empty;
+            AppendResultsJson(context, out json);
             await Util.Respiracao(context);
         }
 
         [LuisIntent("DiferentesSintomas")]
         public async Task DiferentesSintomas(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
+            string json = string.Empty;
+            AppendResultsJson(context, out json);
             await Util.DiferentesSintomas(context);
         }
 
         [LuisIntent("PeriodoSintomas")]
         public async Task PeriodoSintomas(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
+            string json = string.Empty;
+            AppendResultsJson(context, out json);
             await Util.PeriodoSintomas(context);
         }
         [LuisIntent("Substancias")]
         public async Task Substancias(IDialogContext context, LuisResult result)
         {
-            AppendResultsJson(context);
+            string json = string.Empty;
+            AppendResultsJson(context, out json);
             await Util.Substancias(context);
         }
 
@@ -125,7 +150,7 @@ namespace BotAgainstCorona.Dialogs
         [LuisIntent("Erro")]
         public async Task Erro(IDialogContext context, LuisResult result)
         {
-            await Util.Erro(context, _erro);
+            await Util.Erro(context, result.Query);
         }
 
         [LuisIntent("None")]
@@ -134,8 +159,9 @@ namespace BotAgainstCorona.Dialogs
             await Util.None(context);
         }
 
-        private void AppendResultsJson(IDialogContext context)
+        private void AppendResultsJson(IDialogContext context, out string JSONRetorno)
         {
+            JSONRetorno = "";
             Activity activity = (Activity)context.Activity;
             JavaScriptSerializer jss = new JavaScriptSerializer();
             var retornoJSON = jss.Deserialize<dynamic>(activity.Value.ToString().Replace("{{", "{{").Replace("}}", "}"));
@@ -153,14 +179,28 @@ namespace BotAgainstCorona.Dialogs
                         dicAlter.Add(chaves[i], valores[i]);
                     }
                 }
-                dictonary.Add(chaves[0], dicAlter);
+
+                foreach (var item in dicAlter)
+                {
+                    JSONRetorno += item.Key + ": " + item.Value + "\n";
+                }
             }
             else
             {
                 foreach (var item in retornoJSON)
                 {
-                    dictonary.Add(item.Key, item.Value);
+                    if (!dictonary.ContainsKey(item.Key))
+                    {
+                        dictonary.Add(item.Key, item.Value);
+                       
+                    }
                 }
+              
+                foreach (var item in dictonary)
+                {
+                    JSONRetorno = item.Key + ": " + item.Value;
+                }
+
             }
 
         }

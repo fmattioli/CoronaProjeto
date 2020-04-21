@@ -67,7 +67,7 @@ namespace BotAgainstCorona
 
             catch (Exception ex)
             {
-                activity.Text = "ocorreu o seguinte erro" + activity.MembersAdded[0].Name;
+                activity.Text = "ocorreu o seguinte erro" + ex.Message.ToString() +"Tack " + ex.StackTrace; 
                 await Conversation.SendAsync(activity, () => new Dialogs.InicioDialog());
 
             }

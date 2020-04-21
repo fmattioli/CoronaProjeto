@@ -154,6 +154,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <EmbeddedResource Include="credentials.json" />
     <None Include="Properties\PublishProfiles\BotAgainsCorona - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\BotAgainstCorona - FTP1.pubxml" />
@@ -177,10 +178,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bot.Dados\Bot.DataSQLServer.csproj">
+      <Project>{bf0c8bbe-ad60-49a9-a96e-5ee9c30965ee}</Project>
+      <Name>Bot.DataSQLServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bot.Data\Bot.Data.csproj">
+      <Project>{dfc9c634-4e29-4e12-a041-a796218f762e}</Project>
+      <Name>Bot.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bot.Dominio\Bot.Dominio.csproj">
       <Project>{2443f3df-58b8-4d96-81c0-847e6cde8cf5}</Project>
       <Name>Bot.Dominio</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
