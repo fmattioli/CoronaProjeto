@@ -27,7 +27,7 @@ namespace BotAgainstCorona.Dialogs
         private bool _cardResultadoMal = true;
         private bool _erroCardOutrosSintomas { get; set; }
         public string NomeCard { get; set; }
-        public string JSON { get; set; }
+        private string _JSON { get; set; } 
 
         [LuisIntent("inicio")]
         public async Task Inicio(IDialogContext context, LuisResult result)
@@ -42,7 +42,7 @@ namespace BotAgainstCorona.Dialogs
         {
             string json = string.Empty;
             AppendResultsJson(context, out json);
-            dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), json.ToString());
+            _JSON += json + ", \n";
             await Util.Sexo(context);
  
         }
@@ -52,10 +52,10 @@ namespace BotAgainstCorona.Dialogs
         {
             if (!result.Query.Contains("formulário de doencas que o usuário já teve está preenchido de forma incorreta"))
             {
-                NomeCard = "Sexo";
                 string json = string.Empty;
                 AppendResultsJson(context, out json);
-                //dados.InserirDadosConversa(NomeCard, json);
+                _JSON += json + "\n";
+                dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), _JSON, Planilhas.DadosPessoais);
                 await Util.Doencas(context, "Doencas", false);
             }
             else
@@ -79,8 +79,10 @@ namespace BotAgainstCorona.Dialogs
                 }
 
                 string json = string.Empty;
-                AppendResultsJson(context, out json);
-                if(!erroFormulario)
+                AppendResultsJson(context, out json, true);
+                _JSON = json;
+                dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), _JSON, Planilhas.DadosDoencas);
+                if (!erroFormulario)
                    // dados.InserirDadosConversa(NomeCard, json);
 
                 _cardSintomas = false;
@@ -91,6 +93,7 @@ namespace BotAgainstCorona.Dialogs
             {
                 string json = string.Empty;
                 AppendResultsJson(context, out json);
+                _JSON = json;
                 await Util.Sintomas(context, "OutrosSintomas", _cardSintomas);
             }
         }
@@ -100,6 +103,8 @@ namespace BotAgainstCorona.Dialogs
         {
             string json = string.Empty;
             AppendResultsJson(context, out json);
+            _JSON += json;
+            
             await Util.Respiracao(context);
         }
 
@@ -108,6 +113,7 @@ namespace BotAgainstCorona.Dialogs
         {
             string json = string.Empty;
             AppendResultsJson(context, out json);
+            _JSON += json;
             await Util.DiferentesSintomas(context);
         }
 
@@ -115,20 +121,26 @@ namespace BotAgainstCorona.Dialogs
         public async Task PeriodoSintomas(IDialogContext context, LuisResult result)
         {
             string json = string.Empty;
-            AppendResultsJson(context, out json);
+            AppendResultsJson(context, out json, true);
+            _JSON += json;
             await Util.PeriodoSintomas(context);
         }
         [LuisIntent("Substancias")]
         public async Task Substancias(IDialogContext context, LuisResult result)
         {
-            string json = string.Empty;
-            AppendResultsJson(context, out json);
+            string jsonSintomas = string.Empty;
+            AppendResultsJson(context, out jsonSintomas);
+            dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), _JSON, Planilhas.DadosSintomas, jsonSintomas);
             await Util.Substancias(context);
         }
 
         [LuisIntent("Resultado")]
         public async Task Resultado(IDialogContext context, LuisResult result)
         {
+            string jsonSintomas = string.Empty;
+            AppendResultsJson(context, out jsonSintomas);
+            //TODO: Salvar dados das substnacias
+            //dados.CreateEntry(DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), _JSON, Planilhas.DadosSintomas);
             var Sintomas = dictonary["Sintomas"].Count;
             var OutrosSintomas = dictonary["OutrosSintomas"].Count;
             var Respiracao = dictonary["Respiracao"].Count;
@@ -159,7 +171,7 @@ namespace BotAgainstCorona.Dialogs
             await Util.None(context);
         }
 
-        private void AppendResultsJson(IDialogContext context, out string JSONRetorno)
+        private void AppendResultsJson(IDialogContext context, out string JSONRetorno, bool necessarioValidarUltimaPosicao = false)
         {
             JSONRetorno = "";
             Activity activity = (Activity)context.Activity;
@@ -180,9 +192,25 @@ namespace BotAgainstCorona.Dialogs
                     }
                 }
 
+                var index = 0;
+                var count = dicAlter.Count(); //ou Count() - você sabe
                 foreach (var item in dicAlter)
                 {
-                    JSONRetorno += item.Key + ": " + item.Value + "\n";
+                    if (necessarioValidarUltimaPosicao)
+                    {
+                        if (!(++index == count))
+                        {
+                            JSONRetorno += @"""" + item.Key + @"""" + ": " + @"""" + item.Value + @"""" + ",\n";
+                        }
+                        else
+                        {
+                            JSONRetorno += @"""" + item.Key + @"""" + ": " + @"""" + item.Value + @"""" + "\n";
+                        }
+                    }
+                    else
+                    {
+                        JSONRetorno += @"""" + item.Key + @"""" + ": " + @"""" + item.Value + @"""" + ",\n";
+                    }
                 }
             }
             else
@@ -198,7 +226,7 @@ namespace BotAgainstCorona.Dialogs
               
                 foreach (var item in dictonary)
                 {
-                    JSONRetorno = item.Key + ": " + item.Value;
+                    JSONRetorno = @"""" + item.Key + @""""+ ": " + @""""+ item.Value + @"""";
                 }
 
             }
