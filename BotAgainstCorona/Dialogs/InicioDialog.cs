@@ -191,7 +191,7 @@ namespace BotAgainstCorona.Dialogs
                         dicAlter.Add(chaves[i], valores[i]);
                     }
                 }
-
+                dictonary.Add(chaves[0], dicAlter);
                 var index = 0;
                 var count = dicAlter.Count(); //ou Count() - você sabe
                 foreach (var item in dicAlter)
